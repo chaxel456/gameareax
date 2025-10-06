@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shop - BattleZone</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white">
+
+  <!-- NAVBAR -->
+  <header class="flex items-center justify-between p-4 bg-gray-900 border-b border-red-600">
+    <h1 class="text-2xl font-bold text-red-500">BattleZone Shop</h1>
+    <nav class="space-x-4">
+      <a href="index.html" class="hover:text-red-500">Home</a>
+      <a href="tournaments.html" class="hover:text-red-500">Tournaments</a>
+      <a href="live.html" class="hover:text-red-500">Live</a>
+      <a href="chat.html" class="hover:text-red-500">Chat</a>
+      <a href="shop.html" class="text-red-500">Shop</a>
+      <a href="profile.html" class="hover:text-red-500">Profile</a>
+      <a href="wallet.html" class="hover:text-red-500">Wallet</a>
+    </nav>
+  </header>
+
+  <!-- CURRENCY SELECTOR -->
+  <div class="p-4 flex items-center justify-end">
+    <label class="mr-2">Currency:</label>
+    <select id="currency" class="bg-gray-800 border border-red-600 p-2 rounded">
+      <option value="₦">₦ (Naira)</option>
+      <option value="$">$ (USD)</option>
+      <option value="GH₵">GH₵ (Ghana Cedi)</option>
+    </select>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <section class="p-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    
+    <!-- PRODUCT CARD -->
+    <div class="bg-gray-900 p-4 rounded border border-red-600">
+      <img src="https://via.placeholder.com/200x150" class="w-full rounded mb-2" />
+      <h2 class="text-lg font-bold">Wireless Gamepad</h2>
+      <p id="price1" class="text-red-400">₦15000</p>
+      <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded mt-2 w-full">Buy Now</button>
+    </div>
+
+    <div class="bg-gray-900 p-4 rounded border border-red-600">
+      <img src="https://via.placeholder.com/200x150" class="w-full rounded mb-2" />
+      <h2 class="text-lg font-bold">CODM CP Top-Up</h2>
+      <p id="price2" class="text-red-400">₦5000</p>
+      <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded mt-2 w-full">Buy Now</button>
+    </div>
+
+    <div class="bg-gray-900 p-4 rounded border border-red-600">
+      <img src="https://via.placeholder.com/200x150" class="w-full rounded mb-2" />
+      <h2 class="text-lg font-bold">Gaming Headset</h2>
+      <p id="price3" class="text-red-400">₦23000</p>
+      <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded mt-2 w-full">Buy Now</button>
+    </div>
+
+  </section>
+
+  <script>
+    const currencyRates = { "₦": 1, "$": 0.00

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat + Tournaments — BattleZone</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --bg:#070606; --panel:#0f0e0e; --accent:#e11d2b; --accent-2:#ff3b3b;
+    }
+    body{ background: var(--bg); color:#fff; font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial; }
+    .glass { background: linear-gradient(180deg, rgba(43, 20, 64, 0.02), rgba(76, 14, 124, 0.2)); border:1px solid rgba(255,255,255,0.03); }
+    .btn-red { background: linear-gradient(90deg,var(--accent),var(--accent-2)); }
+    .scrollbar::-webkit-scrollbar { width:10px }
+    .scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius:10px }
+  </style>
+</head>
+<body class="min-h-screen flex">
+
+  <!-- SIDEBAR -->
+  <aside class="w-72 bg-gray-900 border-r border-red-600 flex flex-col">
+    <div class="p-4 text-xl font-bold text-red-400 flex items-center gap-3">
+      <div class="w-10 h-10 rounded bg-red-600 flex items-center justify-center font-bold">BZ</div>
+      <div>BattleZone</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="px-2 space-y-1 border-b border-red-700 pb-2">
+      <a href="index.html" class="block px-3 py-2 rounded hover:bg-red-700"> Home</a>
+      <a href="tournaments.html" class="block px-3 py-2 rounded hover:bg-red-700"> Tournaments</a>
+      <a href="live.html" class="block px-3 py-2 rounded hover:bg-red-700"> Live</a>
+      <a href="shop.html" class="block px-3 py-2 rounded hover:bg-red-700">Shop</a>
+      <a href="wallet.html" class="block px-3 py-2 rounded hover:bg-red-700"> Wallet</a>
+      <a href="profile.html" class="block px-3 py-2 rounded hover:bg-red-700">Profile</a>
+      <a href="#" id="logoutBtn" class="block px-3 py-2 rounded hover:bg-red-700"> Logout</a>
+    </nav>
+
+    <!-- Channels -->
+    <div class="p-3 text-sm text-red-300">Channels</div>
+    <nav class="flex-1 overflow-auto scrollbar px-2 pb-4">
+      <a href="#" class="block px-3 py-2 rounded hover:bg-red-700"># general</a>
+      <a href="#" class="block px-3 py-2 rounded hover:bg-red-700"># tournaments</a>
+      <a href="#" class="block px-3 py-2 rounded hover:bg-red-700"># team-chat</a>
+      <a href="#" class="block px-3 py-2 rounded hover:bg-red-700"># betting-room</a>
+      <a href="#" class="block px-3 py-2 rounded hover:bg-red-700"># trading</a>
+    </nav>
+
+    <!-- Quick actions -->
+    <div class="p-4 border-t border-red-700">
+      <button id="openTournamentBtn" class="w-full px-3 py-2 rounded btn-red text-white">Create / Join Tournament</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CHAT AREA -->
+  <main class="flex-1 flex flex-col">
+    <header class="p-4 bg-gray-800 border-b border-red-600 flex items-center justify-between">
+      <div>
+        <h1 class="text-lg font-bold"># General Chat</h1>
+        <div class="text-sm text-white/60">Community • Tournaments • Live</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-white/60">Balance: <span id="cashBal">₦18,500</span> • BZ <span id="bzBal">120</span></div>
+        <button id="navTournament" class="px-3 py-2 bg-red-700 rounded text-sm">Tournaments</button>
+      </div>
+    </header>
+
+    <!-- messages -->
+    <div id="messages" class="flex-1 p-4 overflow-auto scrollbar space-y-4">
+      <div><b class="text-red-400">PlayerOne:</b> Yo! Who's ready for tonight's match?</div>
+      <div><b class="text-red-400">ShadowWolf:</b> I'm placing 5,000₦ bet on Team Inferno 🔥</div>
+    </div>
+
+    <!-- input -->
+    <div class="p-4 bg-gray-900 border-t border-red-700 flex items-center gap-3">
+      <input id="chatInput" class="flex-1 bg-black border border-red-700 p-2 rounded" placeholder="Type a message..." />
+      <button id="sendBtn" class="px-4 py-2 rounded bg-red-600">Send</button>
+      <button id="openTournamentBtnFooter" class="px-3 py-2 rounded border border-red-600"> Tournament</button>
+    </div>
+  </main>
+
+  <!-- TOURNAMENT PANEL (Modal) -->
+  <div id="tournamentModal" class="fixed inset-0 z-50 hidden items-start justify-center pt-20 px-4">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative w-full max-w-3xl bg-gray-900 rounded-2xl border border-red-700 p-5 glass">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Create / Join Tournament</h2>
+        <div class="flex items-center gap-2">
+          <button id="closeTournament" class="px-3 py-1 rounded bg-white/5">Close</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Left: Create / Auto-match -->
+        <div class="space-y-3 p-3 rounded-lg bg-black/30">
+          <h3 class="font-semibold">Create Private Room</h3>
+
+          <label class="text-xs text-white/60">Game</label>
+          <select id="gameSelect" class="w-full p-2 rounded bg-black/60 border border-red-700">
+            <option value="eFootball">eFootball</option>
+            <option value="CODM">CODM</option>
+            <option value="FreeFire">Free Fire</option>
+          </select>
+
+          <label class="text-xs text-white/60">Mode</label>
+          <select id="modeSelect" class="w-full p-2 rounded bg-black/60 border border-red-700">
+            <option value="1v1">1v1</option>
+            <option value="2v2">2v2</option>
+            <option value="squad">Squad</option>
+          </select>
+
+          <label class="text-xs text-white/60">Entry Fee</label>
+          <div class="flex gap-2">
+            <select id="feeCurrency" class="p-2 rounded bg-black/60 border border-red-700">
+              <option value="NGN">₦</option>
+              <option value="USD">$</option>
+              <option value="GHS">GH₵</option>
+              <option value="BZ">BZ</option>
+            </select>
+            <input id="feeAmount" type="number" min="0" value="500" class="flex-1 p-2 rounded bg-black/60 border border-red-700" />
+          </div>
+
+          <div class="flex gap-2 mt-3">
+            <button id="createRoomBtn" class="flex-1 px-3 py-2 rounded btn-red text-white">Create Room (Private)</button>
+            <button id="autoMatchBtn" class="flex-1 px-3 py-2 rounded border border-red-700">Auto-Match</button>
+          </div>
+
+          <div id="createResult" class="text-sm mt-3 text-white/70"></div>
+        </div>
+
+        <!-- Right: Join / Room Code / Current Rooms -->
+        <div class="space-y-3 p-3 rounded-lg bg-black/30">
+          <h3 class="font-semibold">Join Room or Auto-Match</h3>
+
+          <label class="text-xs text-white/60">Enter Room Code</label>
+          <div class="flex gap-2">
+            <input id="joinCode" class="flex-1 p-2 rounded bg-black/60 border border-red-700" placeholder="ROOM-XXXX" />
+            <button id="joinRoomBtn" class="px-3 py-2 rounded bg-red-600">Join</button>
+          </div>
+
+          <div class="mt-2">
+            <h4 class="text-sm font-semibold">Active Rooms (Simulated)</h4>
+            <div id="roomsList" class="mt-2 space-y-2 text-sm text-white/80">
+              <!-- populated by JS -->
+            </div>
+          </div>
+
+          <div class="mt-3 border-t border-red-700 pt-3 text-sm text-white/70">
+            <strong>How it works:</strong>
+            <ol class="list-decimal ml-5 mt-2 text-xs">
+              <li>Create or auto-match for your selected game & mode.</li>
+              <li>If private, share the code (ROOM-XXXX) with friend — they join.</li>
+              <li>Players add each other's in-game Tag (Gamertag / PSN / ID) in the room.</li>
+              <li>Play the match, upload result screenshot to submit.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result submission area (bottom) -->
+      <div id="submit-result-section" class="mt-6">
+  <div class="grid grid-cols-3 gap-4">
+
+    <input id="myTag" class="p-2 rounded bg-black/40 border border-red-800"
+           placeholder="Your In-Game Tag">
+
+    <input id="opponentTag" class="p-2 rounded bg-black/40 border border-red-800"
+           placeholder="Opponent Tag">
+
+    <select id="resultType" class="p-2 rounded bg-black/40 border border-red-800">
+      <option value="won">I Won</option>
+      <option value="lost">I Lost</option>
+      <option value="draw">Draw</option>
+    </select>
+  </div>
+
+  <div class="flex items-center mt-4 gap-4">
+    <input id="screenshot" type="file" class="text-white">
+    <button id="submitResultBtn"
+            class="px-4 py-2 bg-red-600 rounded">
+      Submit Result
+    </button>
+  </div>
+</div>
+
+<!-- Displayed results -->
+<div id="resultOutput" class="mt-6 text-white/80"></div>
+
+        
+        <div id="submitStatus" class="text-sm mt-2 text-white/70"></div>
+      </div>
+    </div>
+  </div>
+    
+
+  <!-- JS: Simulated tournament flows -->
+ <script>
+  // User balance (still works)
+  let user = {
+    name: 'You',
+    cashNGN: 18500,
+    bz: 120
+  };
+
+  function updateBalances() {
+    document.getElementById('bzBal').textContent = user.bz;
+    document.getElementById('cashBal').textContent = '₦' + user.cashNGN.toLocaleString();
+  }
+  updateBalances();
+
+  //  Generate Room Code
+  function genCode() {
+    return 'ROOM-' + Math.floor(1000 + Math.random() * 9000);
+  }
+
+  //  Redirect after Creating Room
+  document.getElementById('createRoomBtn').addEventListener('click', () => {
+    const game = document.getElementById('gameSelect').value;
+    const mode = document.getElementById('modeSelect').value;
+    const feeCurrency = document.getElementById('feeCurrency').value;
+    const feeAmount = Number(document.getElementById('feeAmount').value) || 0;
+    const code = genCode();
+
+    window.location.href =
+      `tournament-room.html?room=${code}&game=${game}&mode=${mode}&fee=${feeAmount}&currency=${feeCurrency}`;
+  });
+
+  //  Redirect after Auto Match
+  document.getElementById('autoMatchBtn').addEventListener('click', () => {
+    const game = document.getElementById('gameSelect').value;
+    const mode = document.getElementById('modeSelect').value;
+    const feeCurrency = document.getElementById('feeCurrency').value;
+    const feeAmount = Number(document.getElementById('feeAmount').value) || 0;
+    const code = genCode();
+
+    window.location.href =
+      `tournament-room.html?room=${code}&game=${game}&mode=${mode}&fee=${feeAmount}&currency=${feeCurrency}&auto=true`;
+  });
+
+  //  Redirect when Joining by Code
+  document.getElementById('joinRoomBtn').addEventListener('click', () => {
+    const code = (document.getElementById('joinCode').value || '').trim().toUpperCase();
+    if (!code) {
+      alert('Enter room code');
+      return;
+    }
+    window.location.href = `tournament-room.html?room=${code}`;
+  });
+
+  //  Modal controls remain the same
+  const modal = document.getElementById('tournamentModal');
+  document.getElementById('openTournamentBtn').addEventListener('click', () => modal.classList.remove('hidden'));
+  document.getElementById('openTournamentBtnFooter').addEventListener('click', () => modal.classList.remove('hidden'));
+  document.getElementById('closeTournament').addEventListener('click', () => modal.classList.add('hidden'));
+  document.getElementById('navTournament').addEventListener('click', () => {
+    window.location.href = 'tournaments.html';
+  });
+
+  // Simple chat send
+  document.getElementById('sendBtn').addEventListener('click', () => {
+    const txt = document.getElementById('chatInput').value.trim();
+    if (!txt) return;
+    const messages = document.getElementById('messages');
+    const row = document.createElement('div');
+    row.innerHTML = '<b class="text-red-400">You:</b> ' + escapeHtml(txt);
+    messages.appendChild(row);
+    messages.scrollTop = messages.scrollHeight;
+    document.getElementById('chatInput').value = '';
+  });
+
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+  }
+
+  //  Logout
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    alert('Logging out (demo).');
+  });
+</script>
+<script>
+  //  Preview uploaded screenshot
+  document.getElementById('screenshotUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const previewBox = document.getElementById('preview');
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewBox.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('w-full', 'h-full', 'object-cover', 'rounded');
+        previewBox.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      previewBox.innerHTML = 'Preview';
+    }
+  });
+
+  //  Handle result submission
+  document.getElementById('submitResultBtn').addEventListener('click', () => {
+    const myTag = document.getElementById('myTag').value.trim();
+    const opponentTag = document.getElementById('opponentTag').value.trim();
+    const result = document.getElementById('resultSelect').value;
+    const screenshot = document.getElementById('screenshotUpload').files[0];
+    const statusBox = document.getElementById('submitStatus');
+
+    if (!myTag || !opponentTag || !screenshot) {
+      statusBox.textContent = 'Please fill all fields and upload a screenshot.';
+      statusBox.style.color = 'orange';
+      return;
+    }
+
+    //  Simulate storage for now
+    statusBox.textContent = 'Result submitted successfully ';
+    statusBox.style.color = 'lightgreen';
+
+    // Reset input
+    document.getElementById('myTag').value = '';
+    document.getElementById('opponentTag').value = '';
+    document.getElementById('resultSelect').value = 'win';
+    document.getElementById('screenshotUpload').value = '';
+    document.getElementById('preview').innerHTML = 'Preview';
+  });
+</script>
+<script>
+  const results = []; // temporary local storage
+
+  document.getElementById('submitResultBtn').addEventListener('click', () => {
+    const myTag = document.getElementById('myTag').value.trim();
+    const opponentTag = document.getElementById('opponentTag').value.trim();
+    const resultType = document.getElementById('resultType').value;
+    const screenshotFile = document.getElementById('screenshot').files[0];
+
+    // Basic validation
+    if (!myTag || !opponentTag || !screenshotFile) {
+      alert("Please fill all fields and upload a screenshot.");
+      return;
+    }
+
+    // Read screenshot name (we'll save full file handling for backend)
+    const resultData = {
+      myTag,
+      opponentTag,
+      result: resultType,
+      screenshot: screenshotFile.name,
+      timestamp: new Date().toISOString()
+    };
+
+    // Save locally for now
+    results.push(resultData);
+
+    // Show confirmation
+    document.getElementById('resultOutput').innerHTML = `
+      <div class="mt-4 p-3 bg-black/40 border border-red-700 rounded">
+        <b>Result submitted!</b><br>
+        Your Tag: ${myTag}<br>
+        Opponent: ${opponentTag}<br>
+        Result: ${resultType}<br>
+        Screenshot: ${screenshotFile.name}
+      </div>
+    `;
+
+    // Clear fields
+    document.getElementById('myTag').value = '';
+    document.getElementById('opponentTag').value = '';
+    document.getElementById('resultType').value = 'won';
+    document.getElementById('screenshot').value = '';
+  });
+</script>
+
+  </script>
+</body>
+</html>

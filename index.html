@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BattleZone — Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0a0a0f; color: #fff; font-family: 'Inter', sans-serif; }
+    .neon { box-shadow: 0 0 15px rgba(155,54,255,0.4); }
+    .hover-glow:hover { box-shadow: 0 0 15px rgba(155,54,255,0.6); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/30 backdrop-blur">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-500 rounded-md flex items-center justify-center font-bold">BZ</div>
+      <span class="font-bold text-lg">BattleZone</span>
+    </div>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-5 text-sm">
+      <a href="index.html" class="hover:text-purple-400">Home</a>
+      <a href="tournaments.html" class="hover:text-purple-400">Tournaments</a>
+      <a href="live.html" class="hover:text-purple-400">Live</a>
+      <a href="chat.html" class="hover:text-purple-400">Chat</a>
+      <a href="shop.html" class="hover:text-purple-400">Shop</a>
+      <a href="profile.html" class="hover:text-purple-400">Profile</a>
+      <a href="wallet.html" class="hover:text-purple-400">Wallet</a>
+    </nav>
+
+    <!-- Hamburger Button -->
+    <button id="menu-btn" class="md:hidden focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Mobile Nav Menu -->
+  <nav id="mobile-menu" class="hidden flex-col gap-3 px-6 py-4 bg-black/80 backdrop-blur md:hidden">
+    <a href="index.html" class="hover:text-purple-400">Home</a>
+    <a href="tournaments.html" class="hover:text-purple-400">Tournaments</a>
+    <a href="live.html" class="hover:text-purple-400">Live</a>
+    <a href="chat.html" class="hover:text-purple-400">Chat</a>
+    <a href="shop.html" class="hover:text-purple-400">Shop</a>
+    <a href="profile.html" class="hover:text-purple-400">Profile</a>
+    <a href="wallet.html" class="hover:text-purple-400">Wallet</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="px-6 py-10 text-center bg-gradient-to-r from-purple-800/20 to-pink-800/10 border-b border-white/5">
+    <h1 class="text-4xl font-extrabold mb-4">Compete. Watch. Bet. Dominate.</h1>
+    <p class="text-white/60 mb-6">Join tournaments, stream battles, connect with pros.</p>
+    <a href="tournaments.html" class="px-6 py-3 bg-purple-600 rounded-lg text-white font-semibold neon hover-glow">Join a Tournament</a>
+  </section>
+
+  <!-- FEATURED LIVE STREAM -->
+  <section class="px-6 py-10 max-w-6xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">🔥 Featured Live Match</h2>
+    <div class="bg-white/5 rounded-xl p-4 flex flex-col md:flex-row gap-6">
+      <video controls autoplay muted loop class="w-full md:w-2/3 rounded-lg bg-black">
+        <source src="my work.mp4" type="video/mp4" />
+      </video>
+      <div class="flex flex-col justify-between">
+        <div>
+          <h3 class="text-xl font-bold mb-2">eFootball — Final Battle</h3>
+          <p class="text-sm text-white/60">Live now — 1,250 viewers</p>
+        </div>
+        <a href="live.html" class="px-4 py-2 bg-pink-600 rounded-lg text-white font-semibold hover-glow text-center">Watch Live</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOURNAMENT PREVIEW -->
+  <section class="px-6 py-10 max-w-6xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4">🎮 Tournaments</h2>
+
+    <!-- CARD 1 -->
+    <div class="bg-white/5 rounded-xl p-4 flex flex-col sm:flex-row gap-4 mb-4 hover:bg-white/10 transition">
+      <img src="https://via.placeholder.com/200x120" class="rounded-md w-full sm:w-48" />
+      <div class="flex flex-col justify-between flex-1">
+        <div>
+          <h3 class="font-bold text-lg">CODM Clash — ₦2,000 Prize</h3>
+          <p class="text-white/50 text-sm">32 Players • Starts Today</p>
+        </div>
+        <a href="#" class="px-4 py-2 bg-purple-600 rounded-lg text-white text-sm w-fit neon hover-glow mt-2 sm:mt-0">Join</a>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="bg-white/5 rounded-xl p-4 flex flex-col sm:flex-row gap-4 mb-4 hover:bg-white/10 transition">
+      <img src="https://via.placeholder.com/200x120" class="rounded-md w-full sm:w-48" />
+      <div class="flex flex-col justify-between flex-1">
+        <div>
+          <h3 class="font-bold text-lg">Free Fire Frenzy — Free Entry</h3>
+          <p class="text-white/50 text-sm">64 Players • 2 Hours Left</p>
+        </div>
+        <a href="#" class="px-4 py-2 bg-purple-600 rounded-lg text-white text-sm w-fit neon hover-glow mt-2 sm:mt-0">Join</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  </script>
+</body>
+</html>

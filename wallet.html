@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wallet - BattleZone</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white">
+
+  <!-- NAVBAR -->
+  <header class="flex items-center justify-between p-4 bg-gray-900 border-b border-red-600">
+    <h1 class="text-2xl font-bold text-red-500">My Wallet</h1>
+    <nav class="space-x-4">
+      <a href="index.html" class="hover:text-red-500">Home</a>
+      <a href="tournaments.html" class="hover:text-red-500">Tournaments</a>
+      <a href="live.html" class="hover:text-red-500">Live</a>
+      <a href="chat.html" class="hover:text-red-500">Chat</a>
+      <a href="shop.html" class="hover:text-red-500">Shop</a>
+      <a href="profile.html" class="hover:text-red-500">Profile</a>
+      <a href="wallet.html" class="text-red-500">Wallet</a>
+    </nav>
+  </header>
+
+  <!-- MAIN WALLET UI -->
+  <section class="p-6 max-w-4xl mx-auto">
+
+    <!-- BALANCE CARD -->
+    <div class="bg-gradient-to-r from-red-700 to-red-500 p-6 rounded-2xl shadow-lg text-center mb-6">
+      <p class="text-sm opacity-80">Total Cash Balance</p>
+      <h2 class="text-3xl font-bold">₦42,000</h2>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <button class="bg-gray-900 border border-red-600 p-3 rounded-xl hover:bg-red-700">➕ Deposit</button>
+      <button class="bg-gray-900 border border-red-600 p-3 rounded-xl hover:bg-red-700">⬇ Withdraw</button>
+      <button class="bg-gray-900 border border-red-600 p-3 rounded-xl hover:bg-red-700">🪙 Earn BZ</button>
+      <button class="bg-gray-900 border border-red-600 p-3 rounded-xl hover:bg-red-700">🔁 Convert</button>
+    </div>
+
+    <!-- BZ COIN CARD -->
+    <div class="bg-gray-900 p-6 rounded-2xl border border-red-600 mb-6">
+      <p class="text-sm opacity-80">BZ Coin Balance</p>
+      <h2 class="text-2xl font-bold text-red-400">2,350 BZ</h2>
+    </div>
+
+    <!-- TRANSACTION HISTORY -->
+    <h3 class="text-lg font-bold text-red-500 mb-2">Transaction History</h3>
+    <div class="bg-gray-900 p-4 rounded-xl border border-red-700 max-h-60 overflow-y-auto">
+      <div class="flex justify-between p-2 border-b border-red-800">
+        <span>CODM Winnings</span>
+        <span class="text-green-400">+₦5000</span>
+      </div>
+      <div class="flex justify-between p-2 border-b border-red-800">
+        <span>Free Fire Bet</span>
+        <span class="text-red-400">-₦2000</span>
+      </div>
+      <div class="flex justify-between p-2 border-b border-red-800">
+        <span>Watched Stream (BZ Earned)</span>
+        <span class="text-yellow-400">+45 BZ</span>
+      </div>
+    </div>
+
+  </section>
+
+</body>
+</html>

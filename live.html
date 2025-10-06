@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BattleZone — Live Match</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Red / Black theme */
+    :root{
+      --bg:#070606;
+      --panel:#0f0e0e;
+      --muted:#bdbdbd;
+      --accent:#e11d2b;
+      --accent-2:#ff3b3b;
+    }
+    body{ background: linear-gradient(180deg,var(--bg), #070607 80%); color:#fff; font-family:Inter,ui-sans-serif,system-ui,-apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    .neon-red { box-shadow: 0 6px 30px rgba(225,29,43,0.12); }
+    .chat-scroll::-webkit-scrollbar{ width:10px } .chat-scroll::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.06); border-radius:10px }
+    .btn-accent{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); }
+    .glass { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.18)); border:1px solid rgba(255,255,255,0.03); }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- NAV -->
+  <header class="flex items-center justify-between px-6 py-4 border-b border-white/6">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-md bg-gradient-to-tr from-[#b91c1c] to-[#ff4b4b] flex items-center justify-center font-bold">BZ</div>
+      <div>
+        <div class="font-bold">BattleZone</div>
+        <div class="text-xs text-white/50">Live — Split Screen</div>
+      </div>
+    </div>
+
+    <nav class="hidden md:flex items-center gap-4 text-sm text-white/80">
+      <a href="index.html" class="hover:text-red-400">Home</a>
+      <a href="tournaments.html" class="hover:text-red-400">Tournaments</a>
+      <a href="live.html" class="text-red-400 font-semibold">Live</a>
+      <a href="chat.html" class="hover:text-red-400">Chat</a>
+      <a href="shop.html" class="hover:text-red-400">Shop</a>
+      <a href="profile.html" class="hover:text-red-400">Profile</a>
+      <a href="wallet.html" class="hover:text-red-400">Wallet</a>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="px-6 py-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- LEFT: Stream (2/3) -->
+      <section class="lg:col-span-2 space-y-4">
+        <div class="rounded-xl overflow-hidden glass neon-red">
+          <!-- Video -->
+          <div class="relative">
+            <video id="liveVideo" class="w-full aspect-video bg-black" controls autoplay muted playsinline>
+              <source src="my work.mp4" type="video/mp4">
+              Your browser doesn't support HTML5 video.
+            </video>
+
+            <!-- overlay info -->
+            <div class="absolute left-4 top-4 px-3 py-2 rounded-md bg-black/40 border border-white/6 text-xs">
+              <div class="font-semibold">eFootball — Grand Finals</div>
+              <div class="text-white/60 text-xs">Live • 1,834 viewers</div>
+            </div>
+
+            <!-- tip & follow -->
+            <div class="absolute right-4 bottom-4 flex gap-3 items-center">
+              <button id="followBtn" class="px-3 py-2 rounded-md text-sm bg-white/6 hover:bg-white/10">Follow</button>
+
+              <button id="openTipBtn" class="px-3 py-2 rounded-md text-sm btn-accent text-white shadow-md">Tip (BZ)</button>
+
+              <button id="openBetBtn" class="px-3 py-2 rounded-md text-sm bg-white/5 hover:bg-white/10">Place Bet</button>
+            </div>
+          </div>
+
+          <!-- match details -->
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold mb-1">BattleZone eFootball Finals</h2>
+              <p class="text-sm text-white/60">Prize Pool: ₦2,000,000 • Best of 5 • Map Rotation Enabled</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-white/50">Next Match</div>
+              <div class="font-semibold">Team Alpha vs Team Omega</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Match feed / recent events -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl glass">
+            <h3 class="font-semibold mb-2">Live Events</h3>
+            <ul class="text-sm text-white/70 space-y-2">
+              <li>00:12 — Goal by Team Alpha</li>
+              <li>02:05 — Yellow card: Player 9</li>
+              <li>07:33 — Substitution — Team Omega</li>
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-xl glass">
+            <h3 class="font-semibold mb-2">Stats</h3>
+            <div class="text-sm text-white/70">
+              <div>Possession: <strong class="text-white">54%</strong></div>
+              <div>Shots: <strong class="text-white">8</strong></div>
+              <div>Pass Accuracy: <strong class="text-white">88%</strong></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: Chat (fixed column) -->
+      <aside class="space-y-4">
+        <div class="rounded-xl glass p-3 h-[72vh] flex flex-col">
+          <!-- header -->
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <div class="text-sm font-semibold">#live-chat</div>
+              <div class="text-xs text-white/60">Chat with viewers • <span id="viewerCount">1,834</span> online</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="text-xs text-white/60">Balance</div>
+              <div id="bzBalance" class="px-2 py-1 rounded text-sm bg-red-600/20 border border-red-600/30">BZ 120</div>
+            </div>
+          </div>
+
+          <!-- messages -->
+          <div id="chatBox" class="flex-1 overflow-auto chat-scroll space-y-3 px-1 pb-2">
+            <!-- messages injected by JS -->
+          </div>
+
+          <!-- typing indicator -->
+          <div id="typingIndicator" class="text-xs text-white/50 h-4"></div>
+
+          <!-- input + tip quick -->
+          <div class="mt-3">
+            <div class="flex gap-2">
+              <input id="chatInput" class="flex-1 rounded-lg px-3 py-2 bg-black/60 placeholder:text-white/50 focus:outline-none" placeholder="Say something to the crowd..." />
+              <button id="sendChat" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10">Send</button>
+            </div>
+
+            <div class="mt-3 flex items-center gap-2 text-sm">
+              <div class="text-white/60">Quick Tip:</div>
+              <button class="px-3 py-1 rounded-md bg-red-600 text-white text-sm" data-amount="5">5 BZ</button>
+              <button class="px-3 py-1 rounded-md bg-red-600 text-white text-sm" data-amount="10">10 BZ</button>
+              <button class="px-3 py-1 rounded-md bg-red-600 text-white text-sm" data-amount="50">50 BZ</button>
+              <button id="moreTip" class="ml-auto px-3 py-1 rounded-md bg-white/5">Custom Tip</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip modal (hidden) -->
+        <div id="tipModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+          <div class="absolute inset-0 bg-black/60"></div>
+          <div class="relative w-full max-w-md p-5 rounded-xl glass">
+            <div class="flex items-center justify-between mb-3">
+              <div class="font-semibold">Send Tip</div>
+              <button id="closeTip" class="text-white/60">✕</button>
+            </div>
+
+            <div class="space-y-3">
+              <div class="text-sm text-white/60">Tip to: <strong>Stream Host</strong></div>
+              <div>
+                <label class="text-xs text-white/60">Amount (BZ Coins)</label>
+                <input id="tipAmount" type="number" min="1" value="10" class="w-full mt-1 px-3 py-2 rounded bg-black/60" />
+              </div>
+
+              <div>
+                <label class="text-xs text-white/60">Message (optional)</label>
+                <input id="tipMessage" type="text" class="w-full mt-1 px-3 py-2 rounded bg-black/60" placeholder="Nice play!" />
+              </div>
+
+              <div class="flex justify-end gap-2 mt-2">
+                <button id="confirmTip" class="px-4 py-2 rounded bg-red-600 text-white">Send Tip</button>
+                <button id="cancelTip" class="px-4 py-2 rounded bg-white/6">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wallet quick actions -->
+        <div class="rounded-xl glass p-3">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-sm font-semibold">Wallet</div>
+            <div class="text-xs text-white/60">Cash • ₦ / $ / GH₵</div>
+          </div>
+          <div class="text-sm text-white/60 mb-3">Cash: ₦ 18,500 • BZ: 120</div>
+          <div class="flex gap-2">
+            <button id="openWallet" class="flex-1 px-3 py-2 rounded-md bg-white/5">Open Wallet</button>
+            <button id="convertBtn" class="px-3 py-2 rounded-md btn-accent text-white">Convert BZ</button>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- minimal wallet modal -->
+  <div id="walletModal" class="fixed inset-0 z-40 hidden items-center justify-center">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative w-full max-w-2xl p-5 rounded-xl glass">
+      <div class="flex items-center justify-between mb-3">
+        <div class="font-semibold">Wallet</div>
+        <button id="closeWallet" class="text-white/60">✕</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded bg-black/50">
+          <div class="text-xs text-white/60">Cash Wallet</div>
+          <div class="text-lg font-bold mt-1">₦ 18,500</div>
+          <div class="mt-3 flex gap-2">
+            <button class="px-3 py-2 rounded bg-red-600 text-white">Deposit</button>
+            <button class="px-3 py-2 rounded bg-white/5">Withdraw</button>
+          </div>
+        </div>
+
+        <div class="p-4 rounded bg-black/50">
+          <div class="text-xs text-white/60">BZ Coins</div>
+          <div class="text-lg font-bold mt-1">120 BZ</div>
+          <div class="mt-3 flex gap-2">
+            <button id="earnBtn" class="px-3 py-2 rounded bg-white/5">How to earn</button>
+            <button class="px-3 py-2 rounded bg-red-600 text-white">Convert</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS: Simulated chat & tipping logic -->
+  <script>
+    // sample state
+    let bzBalance = 120;
+    const chatBox = document.getElementById('chatBox');
+    const bzBalanceEl = document.getElementById('bzBalance');
+    const viewerCountEl = document.getElementById('viewerCount');
+
+    // sample messages
+    const sample = [
+      { user: 'ProFan', text: 'This is unreal!', avatar: '🔥', time: '00:01' },
+      { user: 'GamerMax', text: 'Go Team Alpha!!!', avatar: '⚽', time: '00:02' },
+      { user: 'BetPro', text: 'Alpha +1.5 is value', avatar: '💰', time: '00:03' }
+    ];
+
+    function renderMessage(m, mine=false){
+      const el = document.createElement('div');
+      el.className = 'flex items-start gap-3';
+      el.innerHTML = `
+        <div class="w-9 h-9 rounded-full bg-white/6 flex items-center justify-center text-sm">${m.avatar || '🙂'}</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <div class="font-semibold">${m.user}</div>
+            <div class="text-xs text-white/50">${m.time || ''}</div>
+            <button class="ml-auto text-xs text-red-500 tip-inline ${mine ? 'hidden' : ''}" data-user="${m.user}" data-amt="10">Tip 10 BZ</button>
+          </div>
+          <div class="text-sm text-white/90 mt-1">${m.text}</div>
+        </div>
+      `;
+      chatBox.appendChild(el);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // init render
+    sample.forEach(m => renderMessage(m));
+    bzBalanceEl.textContent = `BZ ${bzBalance}`;
+
+    // typing simulation
+    const typingIndicator = document.getElementById('typingIndicator');
+    function simulateTyping(){
+      typingIndicator.textContent = 'GamerMax is typing...';
+      setTimeout(()=> typingIndicator.textContent = '', 1600);
+    }
+    setInterval(simulateTyping, 9000);
+
+    // send chat
+    document.getElementById('sendChat').addEventListener('click', sendChat);
+    document.getElementById('chatInput').addEventListener('keydown', e=>{
+      if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendChat(); }
+    });
+    function sendChat(){
+      const txt = document.getElementById('chatInput').value.trim();
+      if(!txt) return;
+      const m = { user: 'You', text: txt, avatar: '🙂', time: new Date().toLocaleTimeString().replace(/:\\d+\\s?/,'') };
+      renderMessage(m, true);
+      document.getElementById('chatInput').value = '';
+    }
+
+    // quick tip buttons
+    document.querySelectorAll('[data-amount]').forEach(btn=>{
+      btn.addEventListener('click', ()=> {
+        const amt = Number(btn.getAttribute('data-amount'));
+        doTip(amt, `Quick tip: ${amt} BZ`);
+      });
+    });
+
+    // inline tip (on messages)
+    document.addEventListener('click', (e)=>{
+      if(e.target.matches('.tip-inline')){
+        const user = e.target.dataset.user;
+        const amt = Number(e.target.dataset.amt) || 10;
+        openTipModal(amt, `For ${user}`);
+      }
+    });
+
+    // open tip modal
+    const tipModal = document.getElementById('tipModal');
+    const tipAmount = document.getElementById('tipAmount');
+    const tipMessage = document.getElementById('tipMessage');
+
+    document.getElementById('openTipBtn').addEventListener('click', ()=> openTipModal(10, 'Support Stream'));
+    document.getElementById('openWallet').addEventListener('click', ()=> document.getElementById('walletModal').classList.remove('hidden'));
+    document.getElementById('closeWallet').addEventListener('click', ()=> document.getElementById('walletModal').classList.add('hidden'));
+
+    function openTipModal(amount=10, note=''){
+      tipAmount.value = amount;
+      tipMessage.value = note;
+      tipModal.classList.remove('hidden');
+    }
+    document.getElementById('closeTip').addEventListener('click', ()=> tipModal.classList.add('hidden'));
+    document.getElementById('cancelTip').addEventListener('click', ()=> tipModal.classList.add('hidden'));
+
+    // confirm tip
+    document.getElementById('confirmTip').addEventListener('click', ()=>{
+      const amt = Math.max(1, Number(tipAmount.value));
+      const msg = tipMessage.value || '';
+      doTip(amt, msg);
+      tipModal.classList.add('hidden');
+    });
+
+    function doTip(amount, message){
+      if(amount > bzBalance){
+        alert('Not enough BZ Coins. Earn more or convert cash in Wallet.');
+        return;
+      }
+      bzBalance -= amount;
+      bzBalanceEl.textContent = `BZ ${bzBalance}`;
+
+      // show in chat as donation message
+      const donation = { user: 'You', text: `Tipped ${amount} BZ ${message ? '- "'+message+'"' : ''}`, avatar: '💝', time: new Date().toLocaleTimeString().replace(/:\\d+\\s?/,'') };
+      renderMessage(donation, true);
+
+      // small confetti-like flash (visual feedback)
+      const flash = document.createElement('div');
+      flash.className = 'absolute inset-0 pointer-events-none flex items-center justify-center';
+      flash.innerHTML = `<div class="px-4 py-2 rounded-md bg-red-600/90 text-white font-bold">+${amount} BZ sent</div>`;
+      document.body.appendChild(flash);
+      setTimeout(()=> flash.remove(), 900);
+    }
+
+    // quick tip UI: custom
+    document.getElementById('moreTip').addEventListener('click', ()=> openTipModal(25, ''));
+
+    // convert button (dummy)
+    document.getElementById('convertBtn').addEventListener('click', ()=> alert('Convert BZ to cash / open convert modal (not implemented)'));
+
+    // follow button demo
+    document.getElementById('followBtn').addEventListener('click', ()=> {
+      document.getElementById('followBtn').textContent = 'Following';
+      document.getElementById('followBtn').classList.add('bg-red-700','text-white');
+    });
+
+    // place bet demo
+    document.getElementById('openBetBtn').addEventListener('click', ()=> alert('Open bet dialog (implement server-side betting & KYC in production)'));
+  </script>
+</body>
+</html>

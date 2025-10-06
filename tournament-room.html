@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tournament Room — BattleZone</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    body { background: #070606; color: #fff; font-family: Inter, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="p-4 bg-gray-800 border-b border-red-600 flex items-center justify-between">
+    <h1 class="text-lg font-bold">Tournament Room</h1>
+    <button id="leaveRoomBtn" class="px-3 py-2 bg-red-600 rounded">Leave Room</button>
+  </header>
+
+  <main class="flex-1 p-6 space-y-6">
+    <div>
+      <h2 class="text-xl font-bold mb-2">Room Details</h2>
+      <div id="roomInfo" class="text-white/80"></div>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-bold mb-2">Players</h2>
+      <div id="players" class="space-y-2">
+        <div class="p-3 bg-black/40 rounded border border-red-700">You (Host)</div>
+        <div id="opponentSlot" class="p-3 bg-black/20 rounded border border-red-700 text-white/50">
+          Waiting for opponent...
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+      <button id="shareBtn" class="px-4 py-2 bg-red-700 rounded">Copy Room Code</button>
+      <button id="hostStartBtn" class="px-4 py-2 bg-green-600 rounded">Start Match (Host)</button>
+    </div>
+  </main>
+
+  <script>
+    // ✅ Read URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const room = params.get('room') || 'UNKNOWN';
+    const game = params.get('game') || 'N/A';
+    const mode = params.get('mode') || 'N/A';
+    const fee = params.get('fee') || '0';
+    const currency = params.get('currency') || 'NGN';
+    const auto = params.get('auto') || false;
+
+    // ✅ Display info
+    document.getElementById('roomInfo').innerHTML = `
+      <div><b>Room Code:</b> ${room}</div>
+      <div><b>Game:</b> ${game}</div>
+      <div><b>Mode:</b> ${mode}</div>
+      <div><b>Entry Fee:</b> ${fee} ${currency}</div>
+      ${auto ? '<div><b>Status:</b> Auto-Matching...</div>' : ''}
+    `;
+
+    // ✅ Leave button
+    document.getElementById('leaveRoomBtn').addEventListener('click', () => {
+      window.location.href = 'chat.html';
+    });
+
+    // ✅ Copy Room Code
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText(room);
+      alert('Room code copied: ' + room);
+    });
+
+    // ✅ SOCKET.IO
+    const socketUrl = "http://localhost:3000";
+    const socket = io(socketUrl, { transports: ['websocket'] });
+    window._bzSocket = socket;
+
+    socket.on('connect', () => {
+      console.log('[BZ socket] connected', socket.id);
+      socket.emit('join_room', { room });
+    });
+
+    // ✅ Host start match
+    document.getElementById('hostStartBtn').addEventListener('click', () => {
+      if (!room) return alert('Room code missing');
+
+      if (window._bzSocket) {
+        window._bzSocket.emit('match_start', { 
+          room, 
+          meta: { startedBy: window._bzSocket.id } 
+        });
+        alert('Match started!');
+      } else {
+        alert('Socket not connected.');
+      }
+    });
+
+    // ✅ Listen for match start
+    socket.on('match_started', (payload) => {
+      console.log('match_started', payload);
+      showStreamingUI(payload);
+    });
+
+    // ✅ Stream UI
+    function showStreamingUI(payload){
+      if (document.getElementById('bzStreamWrap')) return;
+      const wrap = document.createElement('div');
+      wrap.id = 'bzStreamWrap';
+      wrap.style.position = 'fixed';
+      wrap.style.right = '20px';
+      wrap.style.bottom = '20px';
+      wrap.style.width = '420px';
+      wrap.style.height = '240px';
+      wrap.style.background = '#000';
+      wrap.style.border = '2px solid #b00020';
+      wrap.style.zIndex = 9999;
+      wrap.innerHTML = `
+        <div style="padding:6px;color:white;background:rgba(176,0,32,0.12);font-weight:bold">
+          Live Stream — ${payload.room}
+        </div>
+        <div style="flex:1;padding:6px;color:#ccc">
+          Streaming player placeholder
+        </div>
+        <button id="bzCloseStream" 
+          style="position:absolute;right:8px;top:8px;
+          background:#b00020;color:white;border:none;
+          padding:4px;border-radius:4px">
+          Close
+        </button>
+      `;
+      document.body.appendChild(wrap);
+      document.getElementById('bzCloseStream').onclick = ()=> wrap.remove();
+    }
+  </script>
+</body>
+</html>
