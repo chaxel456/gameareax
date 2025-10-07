@@ -1,319 +1,147 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BattleZone — Tournaments</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameArena — Tournaments</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#0a0a0a] text-white min-h-screen flex flex-col">
-  <!-- HEADER -->
-  <header class="w-full border-b border-red-700 bg-black/40 backdrop-blur-sm px-6 py-4 flex items-center justify-between">
-    <h1 class="text-2xl font-extrabold tracking-wide text-red-500">BattleZone</h1>
-    <nav class="flex gap-6 text-sm text-gray-300">
+<body class="bg-[#090013] text-white min-h-screen font-sans">
+  <!-- Navbar -->
+  <header class="flex items-center justify-between px-6 py-4 border-b border-purple-700/30 bg-black/40 backdrop-blur-sm">
+    <h1 class="text-2xl font-bold text-purple-400">🎮 GameArena</h1>
+    <nav class="flex items-center gap-6 text-gray-300">
       <a href="index.html" class="hover:text-white">Home</a>
-      <a href="tournaments.html" class="hover:text-white">Tournaments</a>
+      <a href="tournaments.html" class="text-purple-400 font-semibold">Tournaments</a>
       <a href="wallet.html" class="hover:text-white">Wallet</a>
+      <a href="shop.html" class="hover:text-white">Shop</a>
+      <a href="chat.html" class="hover:text-white">Chat</a>
+      <a href="profile.html" class="hover:text-white">Profile</a>
     </nav>
+    <div class="bg-yellow-500/20 px-4 py-2 rounded-lg font-bold text-yellow-400 flex items-center gap-1">
+      💰 <span id="balance">₦1,250</span>
+    </div>
   </header>
-     
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 max-w-4xl mx-auto w-full px-6 py-10">
 
-    <h2 class="text-3xl font-bold mb-8 text-center text-red-500">Tournament Lobby</h2>
+  <!-- Main -->
+  <main class="max-w-7xl mx-auto px-6 py-10">
+    <h2 class="text-4xl font-bold mb-10 text-center text-purple-400 flex items-center justify-center gap-2">
+      🏆 Available Tournaments
+    </h2>
+    <p class="text-center text-gray-400 mb-10">
+      Select a game to view active rooms or create your own
+    </p>
 
-    <!-- CONTAINER -->
-    <div class="space-y-10">
+    <!-- Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12">
+      <div class="bg-[#140024] rounded-xl p-5 border border-purple-700/20 text-center">
+        <p class="text-gray-400 text-sm">Total Games</p>
+        <h3 class="text-3xl font-bold text-white">6</h3>
+      </div>
+      <div class="bg-[#140024] rounded-xl p-5 border border-purple-700/20 text-center">
+        <p class="text-gray-400 text-sm">Active Rooms</p>
+        <h3 class="text-3xl font-bold text-white">56</h3>
+      </div>
+      <div class="bg-[#140024] rounded-xl p-5 border border-purple-700/20 text-center">
+        <p class="text-gray-400 text-sm">Players Online</p>
+        <h3 class="text-3xl font-bold text-white">1324</h3>
+      </div>
+      <div class="bg-[#140024] rounded-xl p-5 border border-purple-700/20 text-center">
+        <p class="text-gray-400 text-sm">Live Now</p>
+        <h3 class="text-3xl font-bold text-green-400">24/7</h3>
+      </div>
+    </div>
 
-      <!-- CREATE ROOM -->
-      <div class="bg-[#111] rounded-xl border border-red-700/20 p-6 shadow-lg">
-        <h3 class="text-xl font-semibold mb-5 text-red-400">Create a Room</h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Game</label>
-            <select id="gameSelect" class="w-full p-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-red-500">
-              <option value="eFootball">eFootball</option>
-              <option value="FIFA">FIFA</option>
-              <option value="COD">Call of Duty</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Mode</label>
-            <select id="modeSelect" class="w-full p-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-red-500">
-              <option value="1v1">1v1</option>
-              <option value="2v2">2v2</option>
-              <option value="squad">Squad</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Entry Fee</label>
-            <input id="feeAmount" type="number" class="w-full p-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-red-500" value="0" />
-          </div>
-
-          <div>
-            <label class="block text-sm mb-1 text-gray-300">Currency</label>
-            <select id="feeCurrency" class="w-full p-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-red-500">
-              <option value="NGN">₦</option>
-              <option value="USD">$</option>
-            </select>
-          </div>
+    <!-- Games List -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      <!-- Game Card -->
+      <div class="bg-gradient-to-b from-green-600/40 to-green-800/20 border border-green-500/30 p-6 rounded-2xl shadow-lg">
+        <div class="text-5xl mb-4 text-center">⚽</div>
+        <h3 class="text-2xl font-semibold mb-2 text-center">eFootball</h3>
+        <p class="text-center text-gray-300 text-sm mb-3">5 Rooms · 120 Players</p>
+        <div class="text-center">
+          <a href="tournament-room.html?game=eFootball" class="inline-block bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded-lg font-medium transition">
+            View Rooms →
+          </a>
         </div>
-
-        <button id="createRoomBtn" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold tracking-wide transition">
-          Create Room
-        </button>
       </div>
 
-      <!-- JOIN BY CODE -->
-      <div class="bg-[#111] rounded-xl border border-red-700/20 p-6 shadow-lg">
-        <h3 class="text-xl font-semibold mb-5 text-red-400">Join a Room</h3>
-        <input id="joinCode" placeholder="Enter room code (e.g. ROOM-1234)"
-          class="w-full p-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-red-500 mb-5" />
-        <button id="joinRoomBtn" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-semibold tracking-wide transition">
-          Join Room
-        </button>
+      <div class="bg-gradient-to-b from-red-600/40 to-orange-800/20 border border-orange-500/30 p-6 rounded-2xl shadow-lg">
+        <div class="text-5xl mb-4 text-center">🔫</div>
+        <h3 class="text-2xl font-semibold mb-2 text-center">Call of Duty Mobile</h3>
+        <p class="text-center text-gray-300 text-sm mb-3">12 Rooms · 284 Players</p>
+        <div class="text-center">
+          <a href="tournament-room.html?game=COD" class="inline-block bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded-lg font-medium transition">
+            View Rooms →
+          </a>
+        </div>
       </div>
 
-      <!-- AUTO MATCH -->
-      <div class="bg-[#111] rounded-xl border border-red-700/20 p-6 shadow-lg">
-        <h3 class="text-xl font-semibold mb-5 text-red-400">Auto Matchmaking</h3>
-        <button id="autoMatchBtn" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold tracking-wide transition">
-          Find Match
-        </button>
+      <div class="bg-gradient-to-b from-orange-600/40 to-yellow-800/20 border border-yellow-500/30 p-6 rounded-2xl shadow-lg">
+        <div class="text-5xl mb-4 text-center">🔥</div>
+        <h3 class="text-2xl font-semibold mb-2 text-center">Free Fire</h3>
+        <p class="text-center text-gray-300 text-sm mb-3">8 Rooms · 156 Players</p>
+        <div class="text-center">
+          <a href="tournament-room.html?game=FreeFire" class="inline-block bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded-lg font-medium transition">
+            View Rooms →
+          </a>
+        </div>
       </div>
 
+      <div class="bg-gradient-to-b from-blue-600/40 to-blue-800/20 border border-blue-500/30 p-6 rounded-2xl shadow-lg">
+        <div class="text-5xl mb-4 text-center">🚗</div>
+        <h3 class="text-2xl font-semibold mb-2 text-center">Asphalt 9</h3>
+        <p class="text-center text-gray-300 text-sm mb-3">3 Rooms · 80 Players</p>
+        <div class="text-center">
+          <a href="tournament-room.html?game=Asphalt9" class="inline-block bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded-lg font-medium transition">
+            View Rooms →
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-b from-pink-600/40 to-pink-800/20 border border-pink-500/30 p-6 rounded-2xl shadow-lg">
+        <div class="text-5xl mb-4 text-center">🎯</div>
+        <h3 class="text-2xl font-semibold mb-2 text-center">PUBG Mobile</h3>
+        <p class="text-center text-gray-300 text-sm mb-3">9 Rooms · 190 Players</p>
+        <div class="text-center">
+          <a href="tournament-room.html?game=PUBG" class="inline-block bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded-lg font-medium transition">
+            View Rooms →
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-b from-purple-600/40 to-purple-800/20 border border-purple-500/30 p-6 rounded-2xl shadow-lg">
+        <div class="text-5xl mb-4 text-center">🕹️</div>
+        <h3 class="text-2xl font-semibold mb-2 text-center">Mobile Legends</h3>
+        <p class="text-center text-gray-300 text-sm mb-3">6 Rooms · 110 Players</p>
+        <div class="text-center">
+          <a href="tournament-room.html?game=ML" class="inline-block bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded-lg font-medium transition">
+            View Rooms →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔥 Hot Event Section -->
+    <div class="bg-gradient-to-r from-purple-800/40 to-fuchsia-800/40 border border-purple-600/40 rounded-2xl p-8 mt-10 flex flex-col md:flex-row justify-between items-center gap-6 shadow-lg">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="bg-red-600 text-xs px-3 py-1 rounded-full font-bold">🔥 Hot Event</span>
+          <span class="text-gray-400 text-sm">Starts in 2 days</span>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-2">Weekend Championship</h3>
+        <p class="text-gray-300 mb-2">Join the biggest tournament of the week with massive prizes!</p>
+        <p class="text-yellow-400 font-semibold">🏆 Prize Pool: $10,000</p>
+      </div>
+      <a href="#" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 transition text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md">
+        Register Now →
+      </a>
     </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="text-center text-gray-500 text-sm py-6 border-t border-red-700/20">
-    © 2025 BattleZone. All Rights Reserved.
+  <!-- Footer -->
+  <footer class="text-center text-gray-500 text-sm py-6 border-t border-purple-700/20 mt-20">
+    © 2025 GameArena. All Rights Reserved.
   </footer>
-
-  <!-- JS -->
-  <script type="module" src="./roomLogic.js"></script>
 </body>
 </html>
-
-
-<script type="module">
-import { supabase } from './supabaseClient.js';
-
-(function(){
-
-  // Helper: nice room code
-  function genCode() {
-    return 'ROOM-' + Math.floor(1000 + Math.random() * 9000);
-  }
-
-  // Ensure we have a display name
-  function ensureDisplayName() {
-    let name = localStorage.getItem('bz_name');
-    if (!name || name.trim() === '') {
-      name = prompt('Enter a display name (visible in lobbies):', 'Player' + Math.floor(100 + Math.random()*900));
-      if (!name) name = 'Guest' + Math.floor(10 + Math.random()*90);
-      localStorage.setItem('bz_name', name);
-    }
-    return localStorage.getItem('bz_name');
-  }
-
-  // helper to get exact count of players in a room
-  async function getPlayerCount(roomId){
-    const { data, error, count } = await supabase
-      .from('players')
-      .select('id', { count: 'exact' })
-      .eq('room_id', roomId);
-    if (error) {
-      console.error('getPlayerCount error', error);
-      return (data && data.length) || 0;
-    }
-    return count ?? (data && data.length) ?? 0;
-  }
-
-  // CREATE ROOM (writes to rooms + players, then redirects)
-  document.getElementById('createRoomBtn').addEventListener('click', async () => {
-    try {
-      const displayName = ensureDisplayName();
-      const game = document.getElementById('gameSelect').value;
-      const mode = document.getElementById('modeSelect').value;
-      const feeCurrency = document.getElementById('feeCurrency').value;
-      const feeAmount = Number(document.getElementById('feeAmount').value) || 0;
-      const code = genCode();
-      const capacity = mode === '2v2' ? 4 : (mode === 'squad' ? 8 : 2);
-
-      // Insert room
-      const { data: roomData, error: roomErr } = await supabase
-        .from('rooms')
-        .insert([{
-          room_code: code,
-          game,
-          mode,
-          entry_fee: feeAmount,
-          currency: feeCurrency,
-          status: 'open'
-        }])
-        .select()
-        .single();
-
-      if (roomErr) {
-        console.error('create room error', roomErr);
-        alert('Failed to create room. See console.');
-        return;
-      }
-
-      // Insert host as first player
-      const { error: pErr } = await supabase
-        .from('players')
-        .insert([{ room_id: roomData.id, name: displayName }]);
-
-      if (pErr) {
-        console.error('add player error', pErr);
-        alert('Room created but failed to add you as player. See console.');
-        return;
-      }
-
-      // Redirect to lobby
-      window.location.href = `tournament-room.html?room=${encodeURIComponent(code)}&game=${encodeURIComponent(game)}&mode=${encodeURIComponent(mode)}&fee=${feeAmount}&currency=${encodeURIComponent(feeCurrency)}`;
-    } catch (err) {
-      console.error(err);
-      alert('Unexpected error creating room.');
-    }
-  });
-
-  // JOIN BY CODE
-  document.getElementById('joinRoomBtn').addEventListener('click', async () => {
-    try {
-      const code = (document.getElementById('joinCode').value || '').trim().toUpperCase();
-      if (!code) { alert('Enter room code'); return; }
-      const displayName = ensureDisplayName();
-
-      // find room
-      const { data: room, error: findErr } = await supabase
-        .from('rooms')
-        .select('*')
-        .eq('room_code', code)
-        .limit(1)
-        .single();
-
-      if (findErr || !room) { alert('Room not found'); return; }
-
-      // check capacity
-      const count = await getPlayerCount(room.id);
-      if (count >= (room.capacity ?? (room.mode === '2v2' ? 4 : (room.mode === 'squad' ? 8 : 2)))) {
-        alert('Room is full');
-        return;
-      }
-
-      // insert player
-      const { error: pErr } = await supabase
-        .from('players')
-        .insert([{ room_id: room.id, name: displayName }]);
-
-      if (pErr) { console.error('join player error', pErr); alert('Failed to join room'); return; }
-
-      // redirect to lobby
-      window.location.href = `tournament-room.html?room=${encodeURIComponent(room.room_code)}&game=${encodeURIComponent(room.game)}&mode=${encodeURIComponent(room.mode)}&fee=${room.entry_fee}&currency=${encodeURIComponent(room.currency)}`;
-    } catch (err) {
-      console.error(err);
-      alert('Error joining room');
-    }
-  });
-
-  // AUTO-MATCH: find an open matching room or create new
-  document.getElementById('autoMatchBtn').addEventListener('click', async () => {
-    try {
-      const displayName = ensureDisplayName();
-      const game = document.getElementById('gameSelect').value;
-      const mode = document.getElementById('modeSelect').value;
-      const feeCurrency = document.getElementById('feeCurrency').value;
-      const feeAmount = Number(document.getElementById('feeAmount').value) || 0;
-      const capacity = mode === '2v2' ? 4 : (mode === 'squad' ? 8 : 2);
-
-      // 1) find candidate rooms
-      const { data: candidates, error: cErr } = await supabase
-        .from('rooms')
-        .select('*')
-        .eq('game', game)
-        .eq('mode', mode)
-        .eq('status', 'open')
-        .order('created_at', { ascending: true })
-        .limit(10);
-
-      if (cErr) {
-        console.error('find candidate rooms err', cErr);
-      }
-
-      // 2) try to join first room that has space
-      if (Array.isArray(candidates) && candidates.length) {
-        for (const r of candidates) {
-          const cnt = await getPlayerCount(r.id);
-          if (cnt < (r.capacity ?? capacity)) {
-            // join this room
-            const { error: pErr } = await supabase
-              .from('players')
-              .insert([{ room_id: r.id, name: displayName }]);
-            if (pErr) { console.error('join candidate player err', pErr); continue; }
-            // redirect
-            window.location.href = `tournament-room.html?room=${encodeURIComponent(r.room_code)}&game=${encodeURIComponent(r.game)}&mode=${encodeURIComponent(r.mode)}&fee=${r.entry_fee}&currency=${encodeURIComponent(r.currency)}`;
-            return;
-          }
-        }
-      }
-
-      // 3) if none found, create a new room and join
-      const code = genCode();
-      const { data: roomData, error: roomErr } = await supabase
-        .from('rooms')
-        .insert([{
-          room_code: code,
-          game,
-          mode,
-          entry_fee: feeAmount,
-          currency: feeCurrency,
-          status: 'open'
-        }])
-        .select()
-        .single();
-
-      if (roomErr) { console.error('auto create room err', roomErr); alert('Auto-match failed'); return; }
-
-      const { error: pErr } = await supabase
-        .from('players')
-        .insert([{ room_id: roomData.id, name: displayName }]);
-
-      if (pErr) { console.error('auto add player err', pErr); alert('Auto-match failed to join'); return; }
-
-      // redirect to the newly created room
-      window.location.href = `tournament-room.html?room=${encodeURIComponent(code)}&game=${encodeURIComponent(game)}&mode=${encodeURIComponent(mode)}&fee=${feeAmount}&currency=${encodeURIComponent(feeCurrency)}`;
-
-    } catch (err) {
-      console.error(err);
-      alert('Auto-match failed');
-    }
-  });
-
-  // small chat send (keeps original behavior)
-  const sendBtn = document.getElementById('sendBtn');
-  if (sendBtn) {
-    sendBtn.addEventListener('click', () => {
-      const txt = document.getElementById('chatInput').value.trim();
-      if (!txt) return;
-      const messages = document.getElementById('messages');
-      const row = document.createElement('div');
-      row.innerHTML = '<b class="text-red-400">You:</b> ' + escapeHtml(txt);
-      messages.appendChild(row);
-      messages.scrollTop = messages.scrollHeight;
-      document.getElementById('chatInput').value = '';
-    });
-  }
-
-  // Escape helper
-  function escapeHtml(s) {
-    return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-  }
-
-})();
-</>
